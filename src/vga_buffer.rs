@@ -28,7 +28,7 @@ struct ColorCode(u8);
 
 impl ColorCode {
     fn new(foreground: Color, background: Color) -> ColorCode {
-        ColorCode(background as u8) << 4 | (foreground as u8)
+        ColorCode((background as u8) << 4 | (foreground as u8))
     }
 }
 
@@ -87,14 +87,14 @@ impl Writer {
     }
 }
 
-
 pub fn print_something() {
     let mut writer = Writer {
         column_position : 0,
-        color_code : ColorCode::new(Color::Black, Color::LightCyan),
-        buffer : unsafe { &mut *(0xb8000 as *mut &mut Buffer)},
+        color_code : ColorCode::new(Color::LightCyan, Color::Black),
+        buffer : unsafe { &mut *(0xb8000 as *mut Buffer)},
     };
 
     writer.write_byte(b'H');
-    writer.write_string("ello, World!");
+    writer.write_string("ello ");
+    writer.write_string("World!");
 }
